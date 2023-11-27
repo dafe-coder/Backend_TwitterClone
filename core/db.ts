@@ -1,13 +1,10 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 
 mongoose.Promise = Promise;
-// ts-ignore-next-line
-mongoose.connect(process.env.MONGODB_URI || 'mongodb:127.0.0.1:27017/twitter', {
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useUnifiedTopology: true,
-	useFindAndModify: false,
-} as ConnectOptions);
+
+mongoose.connect(
+	'mongodb://127.0.0.1:27017/twitter' || process.env.MONGODB_URI
+);
 
 const db = mongoose.connection;
 

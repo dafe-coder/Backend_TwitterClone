@@ -26,9 +26,4 @@ export const registerValidation = [
 				return value;
 			}
 		}),
-	// validator.body('confirmed_hash').isString(),
-	// validator.body('location', 'Location').isString(),
-	// validator.body('about', 'About').isString(),
-	// validator.body('website', 'Website link').isString(),
-	// validator.body('confirmed').isString(),
 ];
