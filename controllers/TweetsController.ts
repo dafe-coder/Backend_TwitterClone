@@ -1,22 +1,26 @@
 import express from 'express';
-import { IUserModel, UserModel, UserModelDocument } from '../models/UserModel';
+import { IUserModel } from '../models/UserModel';
 import { validationResult } from 'express-validator';
 import { ITweetModel, TweetModel } from '../models/TweetModel';
 import { isValidObjectId } from '../utils/isValidObjId';
-
 class TweetsController {
 	async index(_: any, res: express.Response): Promise<void> {
 		try {
-			const tweets = await TweetModel.find({}).exec();
+			const tweets = await TweetModel.find({})
+				.populate('user')
+				.sort({ createdAt: -1 })
+				.exec();
 			res.json({
 				status: 'success',
 				data: tweets,
 			});
 		} catch (error) {
-			res.json({
-				status: 'error',
-				errors: error,
-			});
+			res
+				.json({
+					status: 'error',
+					errors: error,
+				})
+				.send('Server Error');
 		}
 	}
 
@@ -29,7 +33,7 @@ class TweetsController {
 				return;
 			}
 
-			const tweet = await TweetModel.findById(tweetId).exec();
+			const tweet = await TweetModel.findById(tweetId).populate('user').exec();
 
 			if (!tweet) {
 				res.status(400).send();
@@ -49,6 +53,8 @@ class TweetsController {
 
 	async create(req: express.Request, res: express.Response): Promise<void> {
 		try {
+			// @ts-ignore-next-line comment.
+
 			const user = req.user as IUserModel;
 
 			if (user?._id) {
@@ -64,7 +70,7 @@ class TweetsController {
 					user: user,
 				};
 
-				const tweet = TweetModel.create(data);
+				const tweet = await TweetModel.create(data);
 
 				res.json({
 					status: 'success',
@@ -81,6 +87,8 @@ class TweetsController {
 
 	async delete(req: express.Request, res: express.Response): Promise<void> {
 		try {
+			// @ts-ignore-next-line comment.
+
 			const user = req.user as IUserModel;
 
 			if (user?._id) {
@@ -112,6 +120,7 @@ class TweetsController {
 
 	async update(req: express.Request, res: express.Response): Promise<void> {
 		try {
+			// @ts-ignore-next-line comment.
 			const user = req.user as IUserModel;
 
 			if (user?._id) {

@@ -1,5 +1,4 @@
 import { model, Schema, Document } from 'mongoose';
-
 export interface IUserModel {
 	_id?: string;
 	email: string;
