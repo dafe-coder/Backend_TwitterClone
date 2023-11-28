@@ -35,6 +35,12 @@ app.post(
 	createTweetValidations,
 	TweetsCtrl.create
 );
+app.patch(
+	'/tweets/:id',
+	passport.authenticate('jwt'),
+	createTweetValidations,
+	TweetsCtrl.update
+);
 
 app.get('/auth/verify', registerValidation, UserCtrl.verify);
 app.post('/auth/register', registerValidation, UserCtrl.create);
