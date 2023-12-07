@@ -14,7 +14,14 @@ class UploadFilerController {
 						message: error || 'upload error',
 					});
 				}
-				res.json({ result: data }).status(201);
+				res
+					.json({
+						url: data.url,
+						height: data.height,
+						size: Math.round(data.bytes / 1024),
+						width: data.width,
+					})
+					.status(201);
 			})
 			.end(file?.buffer);
 	}

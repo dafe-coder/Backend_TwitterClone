@@ -5,6 +5,7 @@ export interface ITweetModel {
 	_id?: string;
 	text: string;
 	user: IUserModel;
+	images?: string[];
 	// retweets: string;
 	// likes: string;
 	// replies: string;
@@ -22,6 +23,11 @@ const tweetSchema = new Schema({
 		ref: 'user',
 		type: Schema.Types.ObjectId,
 	},
+	images: [
+		{
+			type: String,
+		},
+	],
 });
 
 tweetSchema.set('timestamps', true);

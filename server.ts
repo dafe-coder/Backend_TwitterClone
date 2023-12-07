@@ -8,6 +8,7 @@ import { passport } from './core/passport';
 import { TweetsCtrl } from './controllers/TweetsController';
 import { createTweetValidations } from './validations/createTweet';
 import { UploadCtrl } from './controllers/UploadFileController';
+var cors = require('cors');
 
 var session = require('express-session');
 import multer from 'multer';
@@ -22,6 +23,8 @@ export function hasUser(
 }
 
 const app = express();
+app.use(cors());
+
 app.use(
 	session({
 		secret: 'keyboard cat',
@@ -58,7 +61,7 @@ app.get('/auth/verify', registerValidation, UserCtrl.verify);
 app.post('/auth/register', registerValidation, UserCtrl.create);
 app.post('/auth/login', passport.authenticate('local'), UserCtrl.afterLoading);
 
-app.post('/upload', upload.single('avatar'), UploadCtrl.upload);
+app.post('/upload', upload.single('image'), UploadCtrl.upload);
 
 // app.patch('/users', UserCtrl.update);
 // app.delete('/users', UserCtrl.delete);
